@@ -1,12 +1,17 @@
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, KafkaProducer
 import json
 
 consumer = KafkaConsumer(
     'ride.completed',
     bootstrap_servers='localhost:9092',
     auto_offset_reset='earliest',
-    group_id='earnings-group',
+    group_id='earnings-group new',
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+)
+
+producer = KafkaProducer(
+    bootstrap_servers='localhost:9092',
+    value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
 
 driver_stats = {}
@@ -27,8 +32,17 @@ for message in consumer:
     driver_stats[driver_id]["rides"] += 1
     driver_stats[driver_id]["earnings"] += 5
 
-    print(
-        f"Driver: {driver_id} | "
-        f"Completed Rides: {driver_stats[driver_id]['rides']} | "
-        f"Earnings: ${driver_stats[driver_id]['earnings']}"
+    earnings_record = {
+        "driver_id": driver_id,
+        "completed_rides": driver_stats[driver_id]["rides"],
+        "earnings": driver_stats[driver_id]["earnings"]
+    }
+
+    producer.send(
+        "driver.earnings",
+        value=earnings_record
     )
+
+    print("Published:", earnings_record)
+
+producer.flush()
