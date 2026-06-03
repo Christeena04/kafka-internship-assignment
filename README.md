@@ -17,6 +17,17 @@ A hands-on implementation of Apache Kafka covering core fundamentals, an e-comme
 
 ---
 
+## Features
+
+- Apache Kafka setup using Docker (KRaft mode)
+- CSV-based Producer and Consumer applications
+- Consumer Group Rebalancing
+- Poison Message Handling
+- Dead Letter Topic (DLT) Design
+- Ride Event Processing Pipeline
+- Driver Earnings Aggregation
+- Top Drivers Analytics CLI
+  
 ## Repository Structure
 
 ```
