@@ -228,23 +228,20 @@ Build an end-to-end Kafka analytics pipeline that ingests ride events, filters c
 
 ![Best drivers](Screenshots/BestDriver.png)
 
-**Sample output:**
-
-```
-Top Drivers
-───────────────────────────────
-D102 | Rides: 3 | Earnings: $15
-D101 | Rides: 2 | Earnings: $10
-D104 | Rides: 1 | Earnings:  $5
-```
 
 ## Design Decisions
 
-**Topic separation** — Three topics (`ride.events`, `ride.completed`, `driver.earnings`) keep raw events, filtered events, and analytics data independent and decoupled.
+### Topic Separation
+Three topics (`ride.events`, `ride.completed`, `driver.earnings`) were used to separate raw ride events, filtered completed rides, and analytics results. This improves maintainability and allows independent consumers to process data.
 
-**Event filtering** — A dedicated consumer handles status filtering so downstream services only process relevant data.
+### Event Filtering
+A dedicated consumer filters only completed rides. This ensures downstream analytics are not affected by cancelled or incomplete rides.
 
-**Earnings aggregation** — Calculated exclusively from `COMPLETED` rides to ensure accuracy.
+### Earnings Aggregation
+Driver earnings are calculated using completed rides only, with a flat rate of $5 per ride. Aggregation is performed in a separate consumer to keep business logic isolated.
+
+### Consumer Groups
+Consumer groups were used to demonstrate Kafka's partition rebalancing and workload distribution capabilities.
 
 ---
 
@@ -266,6 +263,10 @@ python "Phase 3/top_drivers.py"
 ```
 
 ---
+
+## Conclusion
+
+This project demonstrates the implementation of Apache Kafka fundamentals and event-driven architectures using Python. It covers producer-consumer communication, consumer groups, partition rebalancing, poison message handling, and a multi-stage ride-sharing analytics pipeline built on Kafka topics.
 
 ## Documentation
 
