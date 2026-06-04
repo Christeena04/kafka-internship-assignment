@@ -268,6 +268,3 @@ python "Phase 3/top_drivers.py"
 
 This project demonstrates the implementation of Apache Kafka fundamentals and event-driven architectures using Python. It covers producer-consumer communication, consumer groups, partition rebalancing, poison message handling, and a multi-stage ride-sharing analytics pipeline built on Kafka topics.
 
-## Documentation
-
-Additional assignment notes are in the `docs/` folder.
